@@ -58,19 +58,15 @@ public class GuiQuiver extends GuiContainerBase
 		int var1 = (this.width - this.xSize) / 2;
 		int var2 = (this.height - this.ySize) / 2 + this.upperInventory.getBaseHeight();
 		drawTexturedModalRect(var1, var2 + 17, 0, 17, this.xSize, 74 + this.upperInventory.getHeight() - 17);
-
 		this.mc.renderEngine.bindTexture(res_generic);
 		drawTexturedModalRect(var1, var2, 0, 0, this.xSize, 17);
 		drawTexturedModalRect(var1, var2 + 18 + this.upperInventory.getHeight(), 0, 126, this.xSize, 96);
-
 		int i = this.upperInventory.getRows();
 		int k = this.upperInventory.getColumns();
-
 		for (int j = 1; j < i; j++)
 		{
 			drawTexturedModalRect(var1 + 7 + this.upperInventory.getCustomAlignment(), var2 + j * 18 - 1, 7, 17, (this.upperInventory.getLengthInventory() * 18), 18);
 		}
-
 		drawTexturedModalRect(var1 + 7 + this.upperInventory.getCustomAlignment(), var2 + i * 18 - 1, 7, 17, k * 18, 18);
 	}*/
 

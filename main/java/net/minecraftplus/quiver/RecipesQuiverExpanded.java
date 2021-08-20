@@ -149,4 +149,3 @@ public class RecipesQuiverExpanded implements IRecipe
 		return null;
 	}
 }
-

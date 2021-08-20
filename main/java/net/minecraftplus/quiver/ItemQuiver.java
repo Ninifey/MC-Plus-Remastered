@@ -76,9 +76,10 @@ public class ItemQuiver extends ItemArmor implements IItemDyeable
 				{
 					if (InventoryUtil.getTotalAmount(parEntityPlayer.inventory, Items.arrow) + i <= 64)
 					{
-						parEntityPlayer.worldObj.playSoundAtEntity(parEntityPlayer, "mob.chicken.step", 0.6F, 0.6F);
 						itemchest.openInventory();
-						this.givePlayerArrows(parEntityPlayer, itemchest, i);
+						if(givePlayerArrows(parEntityPlayer, itemchest, i)){
+							parEntityPlayer.worldObj.playSoundAtEntity(parEntityPlayer, "mob.chicken.step", 0.6F, 0.6F);
+						}
 						itemchest.closeInventory();
 					}
 				}
@@ -207,7 +208,7 @@ public class ItemQuiver extends ItemArmor implements IItemDyeable
 		return parItemStack;
 	}
 
-	private void givePlayerArrows(EntityPlayer parEntityPlayer, IInventory parInventory, int parAmount)
+	private boolean givePlayerArrows(EntityPlayer parEntityPlayer, IInventory parInventory, int parAmount)
 	{
 		if (parInventory != null)
 		{
@@ -216,8 +217,10 @@ public class ItemQuiver extends ItemArmor implements IItemDyeable
 			{
 				parEntityPlayer.playSound("mob.chicken.step", 0.6F, 0.6F);
 				parEntityPlayer.inventory.addItemStackToInventory(itemstack);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private static int getSlotWithItem(IInventory parInventory, Item parItem)
