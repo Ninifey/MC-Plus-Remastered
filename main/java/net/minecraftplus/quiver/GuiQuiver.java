@@ -1,15 +1,14 @@
 package net.minecraftplus.quiver;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftplus._api.tool.ResTool;
 import net.minecraftplus._common.GuiContainerBase;
 import net.minecraftplus.satchel.ModSatchel;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiQuiver extends GuiContainerBase
 {
@@ -23,7 +22,7 @@ public class GuiQuiver extends GuiContainerBase
 
 	public GuiQuiver(EntityPlayer parEntityPlayer, ItemStack parItemStack)
 	{
-		super(new ContainerQuiver(parEntityPlayer, parItemStack), parEntityPlayer.inventory, ItemQuiver.getItemChest(parItemStack));
+		super(new ContainerQuiver(parEntityPlayer, parItemStack), parEntityPlayer.inventory, ItemQuiver.getItemChest(parItemStack,parEntityPlayer));
 
 		this.player = parEntityPlayer;
 		this.quiver = parItemStack;

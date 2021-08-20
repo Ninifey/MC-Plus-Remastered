@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class ModQuiver extends MCP
 {
 	public static final String MODID = "quiver";
-	public static final String VERSION = "1.3.3";
+	public static final String VERSION = "1.3.6";
 
 	@Instance(MCP.MCPID + MODID)
 	public static ModQuiver INSTANCE;

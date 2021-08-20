@@ -70,8 +70,8 @@ public class ItemQuiver extends ItemArmor implements IItemDyeable
 		{
 			int i = this.autoCoolDown-- > 0 ? 0 : 1;
 			if (i > 0)
-			{
-				IInventory itemchest = ItemQuiver.getItemChest(parItemStack);
+			{ 
+				IInventory itemchest = ItemQuiver.getQuiverArmorInv(parEntityPlayer);
 				if (itemchest != null)
 				{
 					if (InventoryUtil.getTotalAmount(parEntityPlayer.inventory, Items.arrow) + i <= 64)
@@ -199,7 +199,7 @@ public class ItemQuiver extends ItemArmor implements IItemDyeable
 		}
 		else
 		{
-			IInventory itemchest = ItemQuiver.getItemChest(parItemStack);
+			IInventory itemchest = ItemQuiver.getItemChest(parItemStack,parEntityPlayer);
 			itemchest.openInventory();
 			this.givePlayerArrows(parEntityPlayer, itemchest, 1);
 			itemchest.closeInventory();
@@ -236,8 +236,42 @@ public class ItemQuiver extends ItemArmor implements IItemDyeable
 		return -1;
 	}
 
-	public static IInventory getItemChest(ItemStack parItemStack)
+	public static IInventory getItemChest(ItemStack parItemStack, EntityPlayer parEntityPlayer)
 	{
-		return new InventoryItem(parItemStack, 18);
+		InventoryQuiver inventoryquiver = null;
+
+		System.out.println("inventory "+parEntityPlayer.getCurrentEquippedItem());
+		if ((parEntityPlayer.getCurrentEquippedItem() != null) && (parEntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemQuiver))
+		{
+			ItemStack itemstack = parEntityPlayer.getCurrentEquippedItem();
+			int i = 6;
+			if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("Size"))
+			{
+				i = itemstack.getTagCompound().getInteger("Size");
+			}
+
+			inventoryquiver = new InventoryQuiver(parEntityPlayer, itemstack, i, false);
+		}
+		return inventoryquiver;
+	}
+	
+
+	public static InventoryQuiver getQuiverArmorInv(EntityPlayer player)
+	{
+		InventoryQuiver inventoryquiver = null;
+
+		if (player.getCurrentArmor(1) != null && player.getCurrentArmor(1).getItem() == ModQuiver.quiver)
+		{
+			ItemStack itemstack = player.getCurrentArmor(1);
+			int i = 1;
+			if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("Size"))
+			{
+				i = itemstack.getTagCompound().getInteger("Size");
+			}
+
+			inventoryquiver = new InventoryQuiver(player, itemstack, i, true);
+		}
+
+		return inventoryquiver;
 	}
 }

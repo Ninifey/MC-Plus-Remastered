@@ -1,58 +1,64 @@
 package net.minecraftplus._common;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class InventoryItem extends InventoryBasic
+public abstract class InventoryItem extends InventoryBasic
 {
+	protected final EntityPlayer thePlayer;
+	protected final ItemStack theItemStack;
+
 	private boolean isReadingNBT;
-	private final ItemStack itemstack;
 
-	public InventoryItem(ItemStack parItemStack, int parInventorySize)
+	public InventoryItem(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack, int par3)
 	{
-		super(parItemStack.getDisplayName(), false, parInventorySize);
+		super(par2ItemStack.getDisplayName(), true, par3);
+		this.thePlayer = par1EntityPlayer;
+		this.theItemStack = par2ItemStack;
 
-		this.itemstack = parItemStack;
+		this.openInventory();
 	}
+
+	public abstract ItemStack getCurrentItemStack(EntityPlayer par1EntityPlayer);
 
 	@Override
 	public void openInventory()
 	{
-		if (!this.hasInventoryTag(this.itemstack))
+		if (!hasInventoryTag(this.theItemStack))
 		{
-			NBTTagCompound tag = this.itemstack.hasTagCompound() ? this.itemstack.getTagCompound() : new NBTTagCompound();
-			this.saveInventoryToNBT(tag);
-			this.itemstack.setTagCompound(tag);
+			NBTTagCompound nbttag = this.theItemStack.hasTagCompound() ? this.theItemStack.getTagCompound() : new NBTTagCompound();
+			this.saveInventoryToNBT(nbttag);
+			this.theItemStack.setTagCompound(nbttag);
 		}
 
-		this.loadInventoryFromNBT(this.itemstack.getTagCompound());
+		this.loadInventoryFromNBT(this.theItemStack.getTagCompound());
 	}
 
 	@Override
 	public void closeInventory()
 	{
-		this.saveInventoryToNBT(this.itemstack.getTagCompound());
+		this.saveInventory();
 	}
-	
-	@Override
-	public void markDirty()
+
+	public void saveInventory()
 	{
-		super.markDirty();
-		if (!this.isReadingNBT)
+		this.saveInventoryToNBT(this.theItemStack.getTagCompound());
+		if (this.thePlayer.getCurrentEquippedItem() != null)
 		{
-			this.saveInventoryToNBT(this.itemstack.getTagCompound());
+			setCopyTagCompound(this.getCurrentItemStack(this.thePlayer), this.theItemStack);
 		}
 	}
 
-	private void loadInventoryFromNBT(NBTTagCompound parNBTTagCompound)
+	public void loadInventoryFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		if (parNBTTagCompound != null)
+		if (par1NBTTagCompound != null)
 		{
 			this.isReadingNBT = true;
 
-			NBTTagList nbttaglist = (NBTTagList) parNBTTagCompound.getCompoundTag("Inventory").getTag("StackItems");
+			NBTTagList nbttaglist = (NBTTagList) par1NBTTagCompound.getCompoundTag("Inventory").getTag("StackItems");
 
 			int i;
 			for (i = 0; i < this.getSizeInventory(); ++i)
@@ -75,9 +81,9 @@ public class InventoryItem extends InventoryBasic
 		}
 	}
 
-	private void saveInventoryToNBT(NBTTagCompound parNBTTagCompound)
+	public NBTTagCompound saveInventoryToNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		if (parNBTTagCompound != null)
+		if (par1NBTTagCompound != null)
 		{
 			NBTTagList nbttaglist = new NBTTagList();
 
@@ -96,13 +102,29 @@ public class InventoryItem extends InventoryBasic
 
 			NBTTagCompound inventory = new NBTTagCompound();
 			inventory.setTag("StackItems", nbttaglist);
-			parNBTTagCompound.setTag("Inventory", inventory);
+			par1NBTTagCompound.setTag("Inventory", inventory);
+		}
+
+		return par1NBTTagCompound;
+	}
+
+	@Override
+	public void markDirty()
+	{
+		super.markDirty();
+		if (!this.isReadingNBT)
+		{
+			this.saveInventory();
 		}
 	}
 
-	private boolean hasInventoryTag(ItemStack parItemStack)
+	public static boolean hasInventoryTag(ItemStack par1ItemStack)
 	{
-		NBTTagCompound tag = parItemStack.getTagCompound();
-		return tag != null && tag.hasKey("Inventory");
+		return (par1ItemStack.getTagCompound() != null) && (par1ItemStack.getTagCompound().hasKey("Inventory"));
+	}
+
+	public static void setCopyTagCompound(ItemStack par1ItemStack, ItemStack par2ItemStack)
+	{
+		par1ItemStack.setTagCompound(par2ItemStack.getTagCompound());
 	}
 }

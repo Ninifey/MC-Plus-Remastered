@@ -6,7 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftplus._common.InventoryItem;
+import net.minecraftplus._common.InventoryItemStac;
 import net.minecraftplus._common.ItemDyeable;
 
 public class ItemSatchel extends ItemDyeable
@@ -47,6 +47,6 @@ public class ItemSatchel extends ItemDyeable
 
 	public static IInventory getItemChest(ItemStack parItemStack)
 	{
-		return new InventoryItem(parItemStack, 18);
+		return new InventoryItemStac(parItemStack, 18);
 	}
 }

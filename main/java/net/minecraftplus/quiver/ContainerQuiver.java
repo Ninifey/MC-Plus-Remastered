@@ -15,7 +15,7 @@ public class ContainerQuiver extends ContainerBase
 
 	public ContainerQuiver(EntityPlayer parEntityPlayer, ItemStack parItemStack)
 	{
-		super(parEntityPlayer.inventory, ItemQuiver.getItemChest(parItemStack));
+		super(parEntityPlayer.inventory, ItemQuiver.getItemChest(parItemStack,parEntityPlayer));
 
 		this.player = parEntityPlayer;
 		this.quiver = parItemStack;

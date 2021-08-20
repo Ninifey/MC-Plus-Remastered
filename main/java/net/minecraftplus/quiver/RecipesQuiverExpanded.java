@@ -100,16 +100,15 @@ public class RecipesQuiverExpanded implements IRecipe
 		else
 		{
 			NBTTagCompound nbttag = itemstack.hasTagCompound() ? itemstack.getTagCompound() : new NBTTagCompound();
-			int inventorysize = nbttag.hasKey("Size") ? itemstack.getTagCompound().getInteger("Size") + 2 : 3;
+			int inventorysize = nbttag.hasKey("Size") ? itemstack.getTagCompound().getInteger("Size") + 6 : 18;
 
-			if (inventorysize > 9)
+			if (inventorysize > 18)
 			{
 				return null;
 			}
 
 			nbttag.setInteger("Size", inventorysize);
 			itemstack.setTagCompound(nbttag);
-			//itemstack.setItemName(this.getStringName(itemstack, inventorysize));
 
 			return itemstack;
 		}
